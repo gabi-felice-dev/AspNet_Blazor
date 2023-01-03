@@ -1,0 +1,6 @@
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.csproj.AssemblyReference.cache
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.AssemblyInfoInputs.cache
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.AssemblyInfo.cs
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.csproj.CoreCompileInputs.cache
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.MvcApplicationPartsAssemblyInfo.cache
