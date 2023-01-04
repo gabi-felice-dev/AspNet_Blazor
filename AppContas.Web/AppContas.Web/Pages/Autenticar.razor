@@ -1,6 +1,78 @@
-﻿<h3>Autenticar</h3>
+﻿@** Define a rota do componente *@
 @page "/"
 
-@code {
+@** Bibliotecas da página *@
+@using AppContas.Web.Requests
 
+<div class="row">
+    <div class="col-12 col-sm-10 col-md-8 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2>Autenticar Usuário</h2>
+                    <p>Entre com suas credenciais de acesso</p>
+                </div>
+                <hr />
+
+                @** Componente para criação de formulários *@
+                <EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+                    @** Componente para ativar as validações baseadas em DataAnnotations *@
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-2">
+                        <label>Email de acesso:</label>
+                        <InputText class="form-control" @bind-Value="request.Email" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.Email)" />
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Senha de acesso:</label>
+                        <InputText type="password" class="form-control" @bind-Value="request.Senha" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.Senha)" />
+                        </span>
+                        <div class="text-end">
+                            <NavLink class="nav-link" href="recuperar-senha">
+                                Esqueci minha senha?
+                            </NavLink>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-grid">
+                            <input type="submit" class="btn btn-primary" value="Entrar" />
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-grid">
+                            <NavLink class="btn btn-light" href="criar-usuario">
+                                Não possui conta? <strong>Cadastre-se aqui!</strong>
+                            </NavLink>
+                        </div>
+                    </div>
+
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@** Codigo C# do componente *@
+@code {
+    //declarar o objeto que será utilizado para capturar o formulário
+    private AutenticarRequest request = new AutenticarRequest();
+
+    //método para capturar o evento de submit do formulário
+    protected async Task OnSubmit()
+    {
+
+    }
 }
+
+
+

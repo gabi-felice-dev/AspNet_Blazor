@@ -1,0 +1,49 @@
+﻿@** Verificar se o componente está em carregamento *@
+@if (IsLoading)
+{
+    if (LoadingTemplate != null)
+    {
+        @LoadingTemplate
+    }
+    else
+    {
+        <div class="spinner-border"></div>
+        <span style="display: inline-block; vertical-align: super">@LoadingText</span>
+    }
+}
+else
+{
+    //exibir o conteudo que será carregado
+    @ChildContent
+}
+
+@** Codigo C# do componente *@
+@code {
+
+    /// <summary>
+    /// Verificar se o componente está aguardando um conteudo ser carregado
+    /// </summary>
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    /// <summary>
+    /// Texto padrão exibido enquanto o conteudo não for carregado no componente
+    /// </summary>
+    [Parameter]
+    public string? LoadingText { get; set; } = "Processando, por favor aguarde...";
+
+    /// <summary>
+    /// Fazer o comportamento de carregamento
+    /// </summary>
+    [Parameter]
+    public RenderFragment? LoadingTemplate { get; set; }
+
+    /// <summary>
+    /// Conteúdo que será carregado no componente
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
+
+
+

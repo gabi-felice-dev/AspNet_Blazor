@@ -1,6 +1,130 @@
-﻿<h3>CriarUsuario</h3>
+﻿@** Define a rota do componente *@
 @page "/criar-usuario"
 
-@code {
+@** Bibliotecas da página *@
+@using AppContas.Web.Requests
+@using AppContas.Web.Responses
+@using AppContas.Web.Pages.Components
 
+@** Injeções de dependência *@
+@inject HttpClient Http
+
+<div class="row">
+    <div class="col-12 col-sm-10 col-md-8 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2>Criar Usuário</h2>
+                    <p>Preencha os campos para criar sua conta.</p>
+                </div>
+                <hr />
+
+                <div class="text-center mb-2">
+                    <Loading IsLoading="isLoading">
+                        <strong class="text-success">@mensagemSucesso</strong>
+                        <strong class="text-danger">@mensagemErro</strong>
+                    </Loading>
+                </div>
+
+                @** Componente para criação de formulários *@
+                <EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+                    @** Componente para ativar as validações baseadas em DataAnnotations *@
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-2">
+                        <label>Nome do usuário:</label>
+                        <InputText class="form-control" @bind-Value="request.Nome" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.Nome)" />
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Email de acesso:</label>
+                        <InputText class="form-control" @bind-Value="request.Email" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.Email)" />
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Senha de acesso:</label>
+                        <InputText type="password" class="form-control" @bind-Value="request.Senha" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.Senha)" />
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Confirme sua senha:</label>
+                        <InputText type="password" class="form-control" @bind-Value="request.SenhaConfirmacao" />
+                        <span class="text-danger">
+                            <ValidationMessage For="@(() => request.SenhaConfirmacao)" />
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-grid">
+                            <input type="submit" class="btn btn-primary" value="Realizar Cadastro" />
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-grid">
+                            <NavLink class="btn btn-light" href="">
+                                Já possui conta? <strong>Acesse aqui!</strong>
+                            </NavLink>
+                        </div>
+                    </div>
+
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@** Codigo C# do componente *@
+@code {
+    //declarar o objeto que será utilizado para capturar o formulário
+    private CriarUsuarioRequest request = new CriarUsuarioRequest();
+
+    //mensagens
+    private string? mensagemSucesso;
+    private string? mensagemErro;
+
+    //carregamento (flag)
+    private bool isLoading;
+
+    //método para capturar o evento de submit do formulário
+    protected async Task OnSubmit()
+    {
+        isLoading = true;
+
+        //limpar as mensagens
+        mensagemSucesso = string.Empty;
+        mensagemErro = string.Empty;
+
+        //fazendo a requisição POST para o ENDPOINT de criação de usuário
+        var response = await Http.PostAsJsonAsync("CriarUsuario", request);
+        //deserializando a resposta obtida da API
+        var content = await response.Content.ReadFromJsonAsync<CriarUsuarioResponse>();
+
+        //verificando a resposta obtida
+        if (response.IsSuccessStatusCode)
+        {
+            mensagemSucesso = content.Mensagem;
+            request = new CriarUsuarioRequest(); //limpando os campos do formulário
+        }
+        else
+        {
+            mensagemErro = content.Mensagem;
+        }
+
+        isLoading = false;
+    }
 }
+
+
+
