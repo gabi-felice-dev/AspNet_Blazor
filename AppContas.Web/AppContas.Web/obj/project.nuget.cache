@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "NqHR7ysg4YJY7KY9ObfUfGrfKAclwVzi8WQg09XF3+32xjVyQDQYVjPfra3/ataUWj21gn/1JDbx4LCM5qpUJw==",
+  "dgSpecHash": "RYrQUAue+t+07P0F8JmL16YOoQ7lv3/7GGj3VE67RUCimDpJm0v9QZx22/KcurQeTOuxdWjcBaK8kgucPSJGRA==",
   "success": true,
   "projectFilePath": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\AppContas.Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\gabri\\.nuget\\packages\\blazored.localstorage\\4.3.0\\blazored.localstorage.4.3.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.aspnetcore.authorization\\7.0.1\\microsoft.aspnetcore.authorization.7.0.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.aspnetcore.components\\7.0.1\\microsoft.aspnetcore.components.7.0.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\7.0.1\\microsoft.aspnetcore.components.analyzers.7.0.1.nupkg.sha512",
@@ -28,6 +29,7 @@
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.jsinterop\\7.0.1\\microsoft.jsinterop.7.0.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.jsinterop.webassembly\\7.0.1\\microsoft.jsinterop.webassembly.7.0.1.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",

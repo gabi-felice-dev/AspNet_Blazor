@@ -20,6 +20,26 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Admin/CadastrarContas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2FkYXN0cmFyQ29udGFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Admin/ConsultarContas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ29uc3VsdGFyQ29udGFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Admin/DadosUsuario.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFkb3NVc3VhcmlvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Admin/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Admin/EditarContas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRWRpdGFyQ29udGFzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Git/AspNet_Blazor/AppContas.Web/AppContas.Web/Pages/Autenticar.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0ZW50aWNhci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

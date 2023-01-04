@@ -1,4 +1,6 @@
 using AppContas.Web;
+using AppContas.Web.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -12,6 +14,12 @@ builder.Services.AddScoped(sp => new HttpClient
     //Configuração de endereço padrão (default)
     BaseAddress = new Uri("http://appcontas1-001-site1.ctempurl.com/api/")
 });
+
+//Registrando os serviços da biblioteca Blazored.LocalStorage
+builder.Services.AddBlazoredLocalStorage();
+
+//Mapeando injeção de dependência da classe AuthService
+builder.Services.AddTransient<AuthService>();
 
 await builder.Build().RunAsync();
 

@@ -826,3 +826,11 @@ C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.
 C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\refint\AppContas.Web.dll
 C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\AppContas.Web.pdb
 C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\ref\AppContas.Web.dll
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\wwwroot\_framework\Blazored.LocalStorage.dll
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\wwwroot\_framework\Newtonsoft.Json.dll
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\wwwroot\_framework\Newtonsoft.Json.dll.gz
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\wwwroot\_framework\Blazored.LocalStorage.dll.gz
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\Blazored.LocalStorage.dll
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\build-gz\kOzj8ZOK.gz
+C:\Git\AspNet_Blazor\AppContas.Web\AppContas.Web\obj\Debug\net7.0\build-gz\0H1QQ+fp.gz

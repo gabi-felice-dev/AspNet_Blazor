@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "F1CItzwcwZm3WzmK5QBp0z4tZMhWwxCSwE+C7EtD5JU=",
+  "Hash": "sC8eX4I8bSudoCN2zaxd6TyPqpbZOdmgdg55zJSb8XI=",
   "Source": "AppContas.Web",
   "BasePath": "/",
   "Mode": "Root",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\gabri\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\7.0.1\\build\\net7.0\\blazor.webassembly.js"
+    },
+    {
+      "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "SourceId": "AppContas.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\gabri\\.nuget\\packages\\blazored.localstorage\\4.3.0\\lib\\net7.0\\Blazored.LocalStorage.dll"
     },
     {
       "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\dotnet.7.0.1.e17vsg2brk.js",
@@ -695,6 +712,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\gabri\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\7.0.1\\runtimes\\browser-wasm\\lib\\net7.0\\netstandard.dll"
+    },
+    {
+      "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Newtonsoft.Json.dll",
+      "SourceId": "AppContas.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Newtonsoft.Json.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\13.0.2\\lib\\net6.0\\Newtonsoft.Json.dll"
     },
     {
       "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.AppContext.dll",
@@ -3604,6 +3638,23 @@
       "OriginalItemSpec": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.Buffers.dll"
     },
     {
+      "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\obj\\Debug\\net7.0\\build-gz\\0H1QQ+fp.gz",
+      "SourceId": "AppContas.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Newtonsoft.Json.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Newtonsoft.Json.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Newtonsoft.Json.dll"
+    },
+    {
       "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\obj\\Debug\\net7.0\\build-gz\\0i9WrtCN.gz",
       "SourceId": "AppContas.Web",
       "SourceType": "Computed",
@@ -5251,6 +5302,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\icudt_no_CJK.dat"
+    },
+    {
+      "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\obj\\Debug\\net7.0\\build-gz\\kOzj8ZOK.gz",
+      "SourceId": "AppContas.Web",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll"
     },
     {
       "Identity": "C:\\Git\\AspNet_Blazor\\AppContas.Web\\AppContas.Web\\obj\\Debug\\net7.0\\build-gz\\kSMDLgNS.gz",

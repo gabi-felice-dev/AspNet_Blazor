@@ -2,10 +2,17 @@
 @page "/"
 
 @** Bibliotecas da página *@
-@using AppContas.Web.Requests
+@using AppContas.Web.Requests;
+@using AppContas.Web.Responses;
+@using AppContas.Web.Services
+
+@** Injeções de dependência *@
+@inject HttpClient Http
+@inject AuthService Auth
+@inject NavigationManager Navigation
 
 <div class="row">
-    <div class="col-12 col-sm-10 col-md-8 offset-md-3">
+    <div class="col-md-6 offset-md-3">
         <div class="card">
             <div class="card-body">
                 <div class="text-center">
@@ -14,17 +21,23 @@
                 </div>
                 <hr />
 
+                <div class="text-center mb-2">
+                    <Loading IsLoading="isLoading">
+                        <strong class="text-danger">@mensagemErro</strong>
+                    </Loading>
+                </div>
+
                 @** Componente para criação de formulários *@
                 <EditForm Model="@request" OnValidSubmit="@OnSubmit">
 
                     @** Componente para ativar as validações baseadas em DataAnnotations *@
-                    <DataAnnotationsValidator />
+                    <DataAnnotationsValidator/>
 
                     <div class="mb-2">
                         <label>Email de acesso:</label>
                         <InputText class="form-control" @bind-Value="request.Email" />
                         <span class="text-danger">
-                            <ValidationMessage For="@(() => request.Email)" />
+                            <ValidationMessage For="@(() => request.Email)"/>
                         </span>
                     </div>
 
@@ -43,7 +56,7 @@
 
                     <div class="mb-2">
                         <div class="d-grid">
-                            <input type="submit" class="btn btn-primary" value="Entrar" />
+                            <input type="submit" class="btn btn-primary" value="Entrar"/>
                         </div>
                     </div>
 
@@ -67,12 +80,27 @@
     //declarar o objeto que será utilizado para capturar o formulário
     private AutenticarRequest request = new AutenticarRequest();
 
+    private string? mensagemErro;
+    private bool isLoading;
+
     //método para capturar o evento de submit do formulário
     protected async Task OnSubmit()
     {
+        isLoading = true;
 
+        var response = await Http.PostAsJsonAsync("Autenticar", request);
+        var content = await response.Content.ReadFromJsonAsync<AutenticarResponse>();
+
+        if(response.IsSuccessStatusCode)
+        {
+            await Auth.SignIn(content);
+            Navigation.NavigateTo("/admin/dashboard", true);
+        }
+        else
+        {
+            mensagemErro = content.Mensagem;
+        }
+
+        isLoading = false;
     }
 }
-
-
-
