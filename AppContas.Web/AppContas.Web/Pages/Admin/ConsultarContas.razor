@@ -1,7 +1,83 @@
 ﻿@page "/admin/consultar-contas"
 
-<h3>ConsultarContas</h3>
+@using AppContas.Web.Services
+@using System.Net.Http.Headers
+
+@inject HttpClient Http
+@inject AuthService Auth
+@inject IJSRuntime JsRuntime
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>Consulta de Contas</h2>
+                <p>Listagem de contas cadastradas.</p>
+                <hr />
+
+                <Loading IsLoading="@isLoading">
+                    <div class="table-responsive">
+                        <table id="grid" class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome da Conta</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Tipo</th>
+                                    <th>Categoria</th>
+                                    <th>Operações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in contas)
+                                {
+                                    <tr>
+                                        <td>@item.NomeConta</td>
+                                        <td>@item.DataConta.Value.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Valor.Value.ToString("c")</td>
+                                        <td>@item.Tipo.Nome</td>
+                                        <td>@item.Categoria.Nome</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <span class="oi oi-pencil" aria-hidden="true"></span>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <span class="oi oi-trash" aria-hidden="true"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </Loading>
+                
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private List<ContaResponse> contas = new List<ContaResponse>();
+    private bool isLoading = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+
+        var data = await Auth.GetData();
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.AccessToken);
+
+        var response = await Http.GetAsync("Contas");
+        if(response.IsSuccessStatusCode)
+            contas = await response.Content.ReadFromJsonAsync<List<ContaResponse>>();
+
+        isLoading = false;
+
+        //aplicando o datatable..
+        await JsRuntime.InvokeAsync<object>("AddDataTable", "#grid");
+    }
 }
+
+
+
