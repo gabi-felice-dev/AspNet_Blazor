@@ -1,7 +1,122 @@
 ﻿@page "/admin/dashboard"
 
-<h3>Dashboard</h3>
+@using AppContas.Web.Services
+@using System.Net.Http.Headers
+
+@inject HttpClient Http
+@inject AuthService Auth
+@inject IJSRuntime JsRuntime
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>Dashboard</h2>
+                <hr />
+
+                <Loading IsLoading="@isLoading">
+
+                    <EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+                        <DataAnnotationsValidator />
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label>Data de Início:</label>
+                                <InputText type="date" class="form-control" @bind-Value="request.DataIni" />
+                                <span class="text-danger">
+                                    <ValidationMessage For="@(() => request.DataIni)" />
+                                </span>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Data de Fim:</label>
+                                <InputText type="date" class="form-control" @bind-Value="request.DataFim" />
+                                <span class="text-danger">
+                                    <ValidationMessage For="@(() => request.DataFim)" />
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Opção de gráfico:</label>
+                                <InputSelect class="form-select" @bind-Value="request.Opcao">
+                                    <option value="">Escolha uma opção</option>
+                                    <option value="1">Total de Contas por Tipo</option>
+                                    <option value="2">Total de Contas por Categoria</option>
+                                </InputSelect>
+                                <span class="text-danger">
+                                    <ValidationMessage For="@(() => request.Opcao)" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="submit" class="btn btn-primary" value="Filtrar Resultados" />
+                            </div>
+                        </div>
+
+                    </EditForm>    
+
+                </Loading>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="grafico"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 
+    private DashboardRequest request = new DashboardRequest();
+    private bool isLoading = false;
+
+    private List<DashboardResponse> tipos = new List<DashboardResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.Authorize(true);
+
+        var data = await Auth.GetData();
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.AccessToken);
+
+        isLoading = true;
+
+        var dataAtual = DateTime.Now;
+
+        request.DataIni = new DateTime(dataAtual.Year, dataAtual.Month, 1).ToString("yyyy-MM-dd");
+        request.DataFim = new DateTime(dataAtual.Year, dataAtual.Month, DateTime.DaysInMonth(dataAtual.Year, dataAtual.Month)).ToString("yyyy-MM-dd");
+        request.Opcao = 1;
+
+        var response = await Http.GetAsync($"Dashboard/{request.DataIni}/{request.DataFim}/{request.Opcao}");
+        var content = await response.Content.ReadFromJsonAsync<List<DashboardResponse>>();
+
+        await JsRuntime.InvokeAsync<object>("AddDonutChart", content, "Total de Contas por tipo", "grafico");
+
+        isLoading = false;        
+    }
+
+    private async Task OnSubmit()
+    {
+        await JsRuntime.InvokeAsync<object>("ClearDonutChart", "grafico");
+
+        isLoading = true;
+
+        var response = await Http.GetAsync($"Dashboard/{request.DataIni}/{request.DataFim}/{request.Opcao}");
+        var content = await response.Content.ReadFromJsonAsync<List<DashboardResponse>>();
+
+        if(request.Opcao == 1)
+        {
+            await JsRuntime.InvokeAsync<object>("AddDonutChart", content, "Total de contas por tipo", "grafico");
+        }
+        else if(request.Opcao == 2)
+        {
+            await JsRuntime.InvokeAsync<object>("AddDonutChart", content, "Total de contas por categoria", "grafico");
+        }
+
+        isLoading = false;
+    }
 }

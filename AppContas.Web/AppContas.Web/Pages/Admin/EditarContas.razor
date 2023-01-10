@@ -1,8 +1,175 @@
-﻿@page "/admin/editar-contas"
+﻿@page "/admin/editar-contas/{Id}"
 
-<h3>EditarContas</h3>
+@using AppContas.Web.Services
+@using System.Net.Http.Headers
+@using System.Globalization;
+
+@inject HttpClient Http
+@inject AuthService Auth
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>Edição de Contas</h2>
+                <p>Utilize o formulário para alterar uma conta.</p>
+                <hr />
+
+                <Loading IsLoading="@isLoading">
+                    <div class="mb-3">
+                        <strong class="text-success">@mensagemSucesso</strong>
+                        <strong class="text-danger">@mensagemErro</strong>
+                    </div>
+                </Loading>
+
+                <EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+                    <DataAnnotationsValidator />
+
+                    <div>
+                        <input type="hidden" @bind="request.Id" />
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Nome da conta:</label>
+                            <InputText class="form-control" @bind-Value="request.NomeConta" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.NomeConta)" />
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Data da conta:</label>
+                            <InputText type="date" class="form-control" @bind-Value="request.DataConta" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.DataConta)" />
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Valor da conta:</label>
+                            <InputText class="form-control" @bind-Value="request.Valor" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.Valor)" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label>Tipo da conta:</label>
+                            <InputSelect class="form-select" @bind-Value="request.TipoId">
+                                <option value="">Escolha uma opção</option>
+                                @foreach (var item in tipos)
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            </InputSelect>
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.TipoId)" />
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Categoria da conta:</label>
+                            <InputSelect class="form-select" @bind-Value="request.CategoriaId">
+                                <option value="">Escolha uma opção</option>
+                                @foreach (var item in categorias)
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            </InputSelect>
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.CategoriaId)" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label>Observações da conta:</label>
+                            <InputTextArea class="form-control" @bind-Value="request.Observacoes" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.Observacoes)" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-primary" value="Salvar Alterações" />
+                        </div>
+                    </div>
+
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 
-}
+    [Parameter]
+    public string? Id { get; set; }
 
+    private EditarContaRequest request = new EditarContaRequest();
+
+    private string? mensagemSucesso;
+    private string? mensagemErro;
+
+    private List<Tipo> tipos = new List<Tipo>();
+    private List<Categoria> categorias = new List<Categoria>();
+
+    private bool isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.Authorize(true);
+
+        var data = await Auth.GetData();
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.AccessToken);
+
+        var respTipos = await Http.GetAsync("Tipos");
+        if (respTipos.IsSuccessStatusCode)
+            tipos = await respTipos.Content.ReadFromJsonAsync<List<Tipo>>();
+
+        var respCategorias = await Http.GetAsync("Categorias");
+        if (respCategorias.IsSuccessStatusCode)
+            categorias = await respCategorias.Content.ReadFromJsonAsync<List<Categoria>>();
+
+        var respConta = await Http.GetAsync($"Contas/{Id}");
+        if(respConta.IsSuccessStatusCode)
+        {
+            var conta = await respConta.Content.ReadFromJsonAsync<ContaResponse>();
+
+            request.Id = conta.Id.ToString();
+            request.NomeConta = conta.NomeConta;
+            request.DataConta = conta.DataConta.Value.ToString("yyyy-MM-dd");
+            request.Valor = String.Format(CultureInfo.InvariantCulture, "{0:F2}", conta.Valor);
+            request.TipoId = conta.Tipo.Id.ToString();
+            request.CategoriaId = conta.Categoria.Id.ToString();
+            request.Observacoes = conta.Observacoes;
+        }
+    }
+
+    protected async Task OnSubmit()
+    {
+        isLoading = true;
+
+        mensagemSucesso = string.Empty;
+        mensagemErro = string.Empty;
+
+        var response = await Http.PutAsJsonAsync("Contas", request);
+        var content = await response.Content.ReadFromJsonAsync<EditarContaResponse>();
+
+        if(response.IsSuccessStatusCode)
+        {
+            mensagemSucesso = content.Mensagem;
+        }
+        else
+        {
+            mensagemErro = content.Mensagem;
+        }
+
+        isLoading = false;
+    }
+}

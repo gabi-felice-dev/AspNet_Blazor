@@ -1,7 +1,7 @@
 ﻿@** Verificar se o componente está em carregamento *@
-@if (IsLoading)
+@if(IsLoading)
 {
-    if (LoadingTemplate != null)
+    if(LoadingTemplate != null)
     {
         @LoadingTemplate
     }
@@ -44,6 +44,3 @@ else
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 }
-
-
-

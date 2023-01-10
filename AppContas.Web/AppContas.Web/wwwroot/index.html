@@ -10,7 +10,7 @@
     <link href="css/app.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="AppContas.Web.styles.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -22,25 +22,70 @@
         <div class="loading-progress-text"></div>
     </div>
 
-    <div id="blazor-error-ui">
+    <!--<div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
-    </div>
+    </div>-->
+
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 
     <script>
+
         function AddDataTable(table) {
             $(document).ready(function () {
                 $(table).DataTable({
                     language: {
-                        url: "//cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json"
+                        url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json"
                     }
                 });
             });
         }
+
+        function ClearDonutChart(element) {
+            $('#' + element).highcharts().destroy();
+        }
+
+        function AddDonutChart(data, title, element) {
+
+            var obj = [...data];
+            var array = [];
+
+            for (var i = 0; i < obj.length; i++) {
+                array.push([
+                    obj[i].name, obj[i].data
+                ]);
+            }
+
+            new Highcharts.Chart({
+                chart: {
+                    type: 'pie',
+                    renderTo: element
+                },
+                title: {
+                    text: title
+                },
+                plotOptions: {
+                    pie: {
+                        innerSize: '60%',
+                        dataLabels: {
+                            enable: true
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [
+                    {
+                        data: array
+                    }
+                ]
+            });
+
+        }
+
     </script>
 
 </body>

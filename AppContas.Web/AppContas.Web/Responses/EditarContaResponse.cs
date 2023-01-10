@@ -1,8 +1,8 @@
 ﻿namespace AppContas.Web.Responses
 {
-    public class RecuperarSenhaResponse
+    public class EditarContaResponse
     {
         public string? Mensagem { get; set; }
-        public UsuarioResponse? Usuario { get; set; }
+        public ContaResponse? Response { get; set; }
     }
 }

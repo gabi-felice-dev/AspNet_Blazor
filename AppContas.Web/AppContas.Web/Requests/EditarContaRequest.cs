@@ -2,8 +2,10 @@
 
 namespace AppContas.Web.Requests
 {
-    public class CadastrarContaRequest
+    public class EditarContaRequest
     {
+        public string? Id { get; set; }
+
         [MinLength(8, ErrorMessage = "Informe no mínimo {1} caracteres.")]
         [MaxLength(150, ErrorMessage = "Informe no máximo {1} caracteres.")]
         [Required(ErrorMessage = "Por favor, informe o nome da conta.")]

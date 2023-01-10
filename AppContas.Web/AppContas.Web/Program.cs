@@ -9,10 +9,10 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //Mapeamento injeção de dependência para a classe HttpClient
-builder.Services.AddScoped(sp => new HttpClient
-{
+builder.Services.AddScoped(sp => new HttpClient 
+{ 
     //Configuração de endereço padrão (default)
-    BaseAddress = new Uri("http://appcontas1-001-site1.ctempurl.com/api/")
+    BaseAddress = new Uri("http://appcontas1-001-site1.ctempurl.com/api/") 
 });
 
 //Registrando os serviços da biblioteca Blazored.LocalStorage
@@ -22,6 +22,3 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddTransient<AuthService>();
 
 await builder.Build().RunAsync();
-
-
-

@@ -16,6 +16,12 @@
                 <hr />
 
                 <Loading IsLoading="@isLoading">
+
+                    <div class="mb-3">
+                        <strong class="text-success">@mensagemSucesso</strong>
+                        <strong class="text-danger">@mensagemErro</strong>
+                    </div>
+
                     <div class="table-responsive">
                         <table id="grid" class="table table-sm table-striped table-hover">
                             <thead>
@@ -38,16 +44,23 @@
                                         <td>@item.Tipo.Nome</td>
                                         <td>@item.Categoria.Nome</td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm">
+                                            <NavLink class="btn btn-primary btn-sm" href="@OnEdit(item.Id.ToString())">
                                                 <span class="oi oi-pencil" aria-hidden="true"></span>
-                                            </button>
-                                            <button class="btn btn-danger btn-sm">
+                                            </NavLink>
+                                            <button class="btn btn-danger btn-sm" @onclick="(() => OnDelete(item.Id.ToString()))">
                                                 <span class="oi oi-trash" aria-hidden="true"></span>
                                             </button>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        Quantidade de contas: @contas.Count
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </Loading>
@@ -61,8 +74,13 @@
     private List<ContaResponse> contas = new List<ContaResponse>();
     private bool isLoading = false;
 
+    private string? mensagemSucesso;
+    private string? mensagemErro;
+
     protected override async Task OnInitializedAsync()
     {
+        await Auth.Authorize(true);
+
         isLoading = true;
 
         var data = await Auth.GetData();
@@ -73,11 +91,36 @@
             contas = await response.Content.ReadFromJsonAsync<List<ContaResponse>>();
 
         isLoading = false;
+    }
 
-        //aplicando o datatable..
-        await JsRuntime.InvokeAsync<object>("AddDataTable", "#grid");
+    private string OnEdit(string id)
+    {
+        return $"/admin/editar-contas/{id}";
+    }
+
+    protected async Task OnDelete(string? id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Deseja realmente excluir esta conta?");
+
+        if (confirmed)
+        {
+            isLoading = true;
+
+            var responseExclusao = await Http.DeleteAsync("Contas/" + id.ToString());
+            var contentExclusao = await responseExclusao.Content.ReadFromJsonAsync<ExcluirContasResponse>();
+
+            if (responseExclusao.IsSuccessStatusCode)
+            {
+                mensagemSucesso = contentExclusao.Mensagem;
+                await OnInitializedAsync();
+            }            
+
+            isLoading = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //await JsRuntime.InvokeAsync<object>("AddDataTable", "#grid");
     }
 }
-
-
-

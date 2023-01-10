@@ -6,6 +6,3 @@
         public ContaResponse? Conta { get; set; }
     }
 }
-
-
-

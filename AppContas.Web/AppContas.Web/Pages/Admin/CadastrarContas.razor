@@ -13,7 +13,7 @@
             <div class="card-body">
                 <h2>Cadastro de Contas</h2>
                 <p>Preencha o formulário para incluir uma conta.</p>
-                <hr />
+                <hr/>
 
                 <Loading IsLoading="@isLoading">
                     <div class="mb-3">
@@ -24,14 +24,14 @@
 
                 <EditForm Model="@request" OnValidSubmit="@OnSubmit">
 
-                    <DataAnnotationsValidator />
+                    <DataAnnotationsValidator/>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label>Nome da conta:</label>
-                            <InputText class="form-control" @bind-Value="request.NomeConta" />
+                            <InputText class="form-control" @bind-Value="request.NomeConta"/>
                             <span class="text-danger">
-                                <ValidationMessage For="@(() => request.NomeConta)" />
+                                <ValidationMessage For="@(() => request.NomeConta)"/>
                             </span>
                         </div>
                         <div class="col-md-3">
@@ -55,7 +55,7 @@
                             <label>Tipo da conta:</label>
                             <InputSelect class="form-select" @bind-Value="request.TipoId">
                                 <option value="">Escolha uma opção</option>
-                                @foreach (var item in tipos)
+                                @foreach(var item in tipos)
                                 {
                                     <option value="@item.Id">@item.Nome</option>
                                 }
@@ -82,7 +82,7 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label>Observações da conta:</label>
-                            <InputTextArea class="form-control" @bind-Value="request.Observacoes" />
+                            <InputTextArea class="form-control" @bind-Value="request.Observacoes"/>
                             <span class="text-danger">
                                 <ValidationMessage For="@(() => request.Observacoes)" />
                             </span>
@@ -91,7 +91,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-primary" value="Realizar Cadastro" />
+                            <input type="submit" class="btn btn-primary" value="Realizar Cadastro"/>
                         </div>
                     </div>
 
@@ -114,6 +114,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Auth.Authorize(true);
+
         var data = await Auth.GetData();
         Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.AccessToken);
 
@@ -124,7 +126,7 @@
 
         //consultando as categorias
         var respCategorias = await Http.GetAsync("Categorias");
-        if (respCategorias.IsSuccessStatusCode)
+        if(respCategorias.IsSuccessStatusCode)
             categorias = await respCategorias.Content.ReadFromJsonAsync<List<Categoria>>();
     }
 
@@ -138,7 +140,7 @@
         var response = await Http.PostAsJsonAsync("Contas", request);
         var content = await response.Content.ReadFromJsonAsync<CadastrarContaResponse>();
 
-        if (response.IsSuccessStatusCode)
+        if(response.IsSuccessStatusCode)
         {
             mensagemSucesso = content.Mensagem;
             request = new CadastrarContaRequest();

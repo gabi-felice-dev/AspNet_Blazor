@@ -1,7 +1,131 @@
-﻿@page "/admin/dados-usuario"
+﻿@** Define a rota do componente *@
+@page "/admin/dados-usuario"
 
-<h3>DadosUsuario</h3>
+@** Bibliotecas da página *@
+@using AppContas.Web.Services
+@using System.Net.Http.Headers;
 
+@** Injeções de dependência *@
+@inject HttpClient Http
+@inject AuthService Auth
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>Dados do Usuário</h2>
+                <p>Informações do usuário autenticado.</p>
+                <hr />
+
+                <div class="mb-3">
+                    Nome do usuário: <strong>@usuario.Nome</strong> <br />
+                    Email: <strong>@usuario.Email</strong>
+                </div>
+
+                <br />
+
+                <h4>Alterar Senha de acesso</h4>
+                <p>Preencha os campos para modificar sua senha.</p>
+                <hr />
+
+                <div class="mb-3">
+                    <Loading IsLoading="isLoading">
+                        <strong class="text-success">@mensagemSucesso</strong>
+                        <strong class="text-danger">@mensagemErro</strong>
+                    </Loading>
+                </div>
+
+                @** Componente para criação de formulários *@
+                <EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+                    @** Componente para ativar as validações baseadas em DataAnnotations *@
+                    <DataAnnotationsValidator />
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>Senha atual:</label>
+                            <InputText type="password" class="form-control" @bind-Value="request.SenhaAtual" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.SenhaAtual)" />
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Nova senha:</label>
+                            <InputText type="password" class="form-control" @bind-Value="request.NovaSenha" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.NovaSenha)" />
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Confirme a nova senha:</label>
+                            <InputText type="password" class="form-control" @bind-Value="request.NovaSenhaConfirmacao" />
+                            <span class="text-danger">
+                                <ValidationMessage For="@(() => request.NovaSenhaConfirmacao)" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-primary" value="Salvar Alterações" />
+                        </div>
+                    </div>
+
+                </EditForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@** Codigo C# do componente *@
 @code {
+    private AlterarSenhaRequest request = new AlterarSenhaRequest();
+    private UsuarioResponse usuario = new UsuarioResponse();
 
+    //mensagens
+    private string? mensagemSucesso;
+    private string? mensagemErro;
+
+    //carregamento (flag)
+    private bool isLoading;
+
+    //método executado ao abrir a página
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.Authorize(true);
+
+        var data = await Auth.GetData();
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.AccessToken);
+
+        usuario = data.Usuario;
+    }
+
+    //método para capturar o evento de submit do formulário
+    protected async Task OnSubmit()
+    {
+        isLoading = true;
+
+        //limpar as mensagens
+        mensagemSucesso = string.Empty;
+        mensagemErro = string.Empty;
+
+        //fazendo a requisição POST para o ENDPOINT de criação de usuário
+        var response = await Http.PostAsJsonAsync("AlterarSenha", request);
+        //deserializando a resposta obtida da API
+        var content = await response.Content.ReadFromJsonAsync<AlterarSenhaResponse>();
+
+        //verificando a resposta obtida
+        if (response.IsSuccessStatusCode)
+        {
+            mensagemSucesso = content.Mensagem;
+            request = new AlterarSenhaRequest(); //limpando os campos do formulário
+        }
+        else
+        {
+            mensagemErro = content.Mensagem;
+        }
+
+        isLoading = false;
+    }
 }

@@ -2,8 +2,6 @@
 @page "/"
 
 @** Bibliotecas da página *@
-@using AppContas.Web.Requests;
-@using AppContas.Web.Responses;
 @using AppContas.Web.Services
 
 @** Injeções de dependência *@
@@ -82,6 +80,11 @@
 
     private string? mensagemErro;
     private bool isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Auth.Authorize(false);
+    }
 
     //método para capturar o evento de submit do formulário
     protected async Task OnSubmit()
