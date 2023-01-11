@@ -1,0 +1,149 @@
+﻿@page "/cadastrar-produtos"
+
+@using AppProdutos.Web.Requests
+@using AppProdutos.Web.Responses
+@using System.Net.Http.Headers;
+
+@inject HttpClient Http
+@inject IConfiguration Configuration
+
+<h1 class="mt-4">Cadastro de Produtos</h1>
+<p>Preencha o formulário para incluir um produto.</p>
+<hr/>
+
+<EditForm Model="@request" OnValidSubmit="@OnSubmit">
+
+    <DataAnnotationsValidator/>
+
+    <div class="row mb-3">
+        <h4>@mensagem</h4>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>Nome do produto:</label>
+            <InputText class="form-control" @bind-Value="request.Nome"/>
+            <span class="text-danger">
+                <ValidationMessage For="@(() => request.Nome)"/>
+            </span>
+        </div>
+        <div class="col-md-6">
+            <label>Foto do produto:</label>
+            <InputFile multiple OnChange="CapturarArquivos" class="form-control" />
+            <div>
+                @if (arquivos != null)
+                {
+                    foreach (var item in arquivos)
+                    {
+                        <div class="card mt-2">
+                            <div class="card-body">
+                                <div>Nome do arquivo: <strong>@item.Name</strong></div>
+                                <div>Tamanho do arquivo: <strong>@item.Size</strong></div>
+                                <div>Tipo do arquivo: <strong>@item.ContentType</strong></div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label>Descrição:</label>
+            <InputTextArea class="form-control" @bind-Value="request.Descricao"/>
+            <span class="text-danger">
+                <ValidationMessage For="@(() => request.Descricao)"/>
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <input type="submit" class="btn btn-primary" value="Realizar Cadastro"/>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+
+    //classe para capturar os campos do formulário
+    private CadastrarProdutoRequest request = new CadastrarProdutoRequest();
+
+    //exibir mensagem no componente
+    private string mensagem;
+
+    //objeto para capturar os arquivos selecionados no campo de upload
+    IReadOnlyList<IBrowserFile> arquivos;
+
+    //método para capturar a seleção do campo de upload de arquivos
+    void CapturarArquivos(InputFileChangeEventArgs eventArgs)
+    {
+        //quantidade máxima de arquivos que poderão ser capturados
+        const int quantidadeMaximaDeArquivos = 1;
+
+        //capturar os arquivos
+        arquivos = eventArgs.GetMultipleFiles(quantidadeMaximaDeArquivos);
+    }
+
+    //método para capturar o submit do formulário
+    private async Task OnSubmit()
+    {
+        mensagem = string.Empty;
+
+        //verificar se algum arquivo foi selecionado para upload..
+        if(arquivos != null && arquivos.Any())
+        {
+            if(arquivos.FirstOrDefault(a => a.Size >= (1024 * 1024)) != null)
+            {
+                mensagem = "Por favor, envie arquivos com no máximo 1MB";
+            }
+            else
+            {
+                mensagem = "Processando, por favor aguarde...";
+
+                //Preparando o arquivo..
+                byte[] byteArray = null;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await arquivos.First().OpenReadStream().CopyToAsync(memoryStream);
+                    byteArray = memoryStream.ToArray();
+                }
+
+                //endpoint da API
+                var requestUri = Configuration["ApiProdutos"] + "Produtos";
+
+                //montando o conteúdo da requisição
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
+
+                //envio do arquivo + tipagem da requisição
+                var form = new MultipartFormDataContent();
+                var fileContent = new ByteArrayContent(byteArray);
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+                //dados da requisição
+                form.Add(new StringContent(request.Nome), "Nome");
+                form.Add(new StringContent(request.Descricao), "Descricao");
+                form.Add(fileContent, "Foto", arquivos.First().Name);
+                requestMessage.Content = form;
+
+                //enviando a requisição para a API
+                var response = await Http.SendAsync(requestMessage);
+                var content = await response.Content.ReadFromJsonAsync<CadastrarProdutoResponse>();
+
+                mensagem = content.Mensagem;
+
+                //limpar os dados do formulário
+                request = new CadastrarProdutoRequest();
+                arquivos = null;
+            }            
+        }
+        else
+        {
+            mensagem = "Por favor, selecione 1 foto para o produto.";
+        }
+    }
+}
+
+

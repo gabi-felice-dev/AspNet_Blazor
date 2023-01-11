@@ -1,0 +1,36 @@
+﻿@page "/consultar-produtos"
+
+@using AppProdutos.Web.Responses
+@using AppProdutos.Web.Pages.Components
+@using System.Net.Http.Headers
+
+@inject HttpClient Http
+@inject IConfiguration Configuration
+
+<h1 class="mt-4">Consulta de Produtos</h1>
+<p>Listagem de produtos cadastrados.</p>
+<hr />
+
+@foreach (var item in produtos)
+{
+    <div class="mb-2">
+        <DadosProduto 
+            Foto="@(Configuration["ImgProdutos"] + item.Foto)" 
+            Nome="@item.Nome"
+            Descricao="@item.Descricao"
+            />
+    </div>
+}
+
+@code {
+
+    List<ProdutoResponse> produtos = new List<ProdutoResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync(Configuration["ApiProdutos"] + "Produtos");
+        produtos = await response.Content.ReadFromJsonAsync<List<ProdutoResponse>>();
+    }
+}
+
+
